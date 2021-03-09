@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config-demo
+  labels:
+    app: sbdemo-appserver-service
+data:
+  POSTGRES_HOST: "jdbc:postgresql://octank-db-cluster.cluster-cr7nxqakqtei.us-east-2.rds.amazonaws.com:5432/demodb"
+#Below getting from secrets
+
+#  POSTGRES_DB: demodb
+#  POSTGRES_USER: octankwu
+#  POSTGRES_PASSWORD: ajeepp11

@@ -1,0 +1,24 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: sbdemo-ingress
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-2:823159980483:certificate/7c412a46-7abb-4cc3-8b9a-7c64a68dee30
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+    alb.ingress.kubernetes.io/success-codes: 200-302
+    alb.ingress.kubernetes.io/actions.redirect-to-https: '{"type":"redirect","redirectConfig":{"port":"443","protocol":"HTTPS","statusCode":"HTTP_301"}}'
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: redirect-to-https
+              servicePort: use-annotation
+          - path: /*
+            backend:
+              serviceName: sbdemo-nginx-np
+              servicePort: 80

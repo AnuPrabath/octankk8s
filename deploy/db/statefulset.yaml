@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: 
+    sbdemo-postgres-sfs
+spec:
+  serviceName: sbdemo-postgres-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sbdemo-postgres-sfs
+  template:
+    metadata:
+      labels:
+        app: sbdemo-postgres-sfs
+    spec:
+      containers:
+       - name: postgres
+         image: ajeebpeter/eksdemo:postgres9.6
+         envFrom:
+          - configMapRef:
+              name: postgres-config-demo
+         ports:
+          - containerPort: 5432
+         volumeMounts:
+         - name: pvc-db-volume
+           mountPath: /var/lib/postgresql
+  volumeClaimTemplates:
+  - metadata:
+      name: pvc-db-volume
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1G
+
